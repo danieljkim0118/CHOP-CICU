@@ -36,7 +36,8 @@ The training process is completed using a cross-validation procedure to ensure t
 The performance of the classifier is evaluated by first sliding a larger window (default is 1 minute) over the entire set of predictions for the unseen patient. Within each window, the most frequent prediction/label is compared to compute test metrics. Consult **evaluate_model.py** for specific parameter options used during the testing procedure. The training curves and test metrics can be plotted in **visualize_model.py**, with some results depicted below.
 
 ## Cardiac Arrest Onset Prediction
-
+*The code is located in the folder CHOP_CICU*
+A more interesting application of inter-EEG transfer learning in this project is prediction of imminent cardiac arrest. Similar to the background detection, using a pre-trained model can overcome the limitations imposed by the small size of the available CHOP dataset. The raw data stored in pickle files are loaded into the desired format in **load_dataset_pred.py**. Then, it is processed in the same way as dictated by **preprocess_data.py** and trained on a CNN as defined in **models.py**.
 
 ## References
 1.	KC Odegard et al., The frequency of cardiac arrests in patients with congenital heart disease undergoing cardiac catherization. Anesth Analg. 2014;118(1): 175-182
