@@ -73,11 +73,16 @@ Again, our custom model performs better compared to the baseline model.
 ![](img/CICU_PRED_P4_B.PNG)
 ![](img/CICU_PRED_P4_TF.PNG)
 
-Both models output a high amount of false positive alarms, making it difficult for clinical implementation. In fact, a significant portion of the patients have similar results to the figure above, and this result will be discussed in the following section.
+Both models output a high amount of false positive alarms, making it difficult for clinical implementation. In fact, a significant portion of the patients have similar results to the figure above, including the worst result depicted below:
 
-Below is a summarized comparison between baseline NN models and transfer learning-based CNN models on the cardiac arrest prediction task.
+![](img/CICU_PRED_P5_B.PNG)
+![](img/CICU_PRED_P5_TF.PNG)
 
-![](img/CICU_PRED_FD.PNG)
+The causes for these unfavorable results will be discussed in the following section.
+
+A summarized comparison between baseline NN models and transfer learning-based CNN models on the cardiac arrest prediction task has been provided below.
+
+![](img/CICU_PRED_FD.png)
 
 The false detection rates of the model is defined as each 15-minute segment that contains a post-processed output falsely predicting the presence of cardiac arrest. Overall, all models were able to detect the presence of cardiac arrest at least ~5 minutes before the actual cardiac arrest onset. It can be seen that models that have leveraged transfer learning generally outperform the baseline model, and that our model is able to predict cardiac arrest with no more than 1 false detection/hr for more than half of the patients.
 
