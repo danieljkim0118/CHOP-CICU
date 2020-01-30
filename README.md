@@ -40,6 +40,10 @@ The training process is completed using a cross-validation procedure to ensure t
 
 The performance of the classifier is evaluated by first sliding a larger window (default is 1 minute) over the entire set of predictions for the unseen patient. Within each window, the most frequent prediction/label is compared to compute test metrics. Consult **evaluate_model.py** for specific parameter options used during the testing procedure. The training curves and test metrics can be plotted in **visualize_model.py**, with some results depicted below.
 
+![](img/CICU_EEG_acc.png)
+![](img/CICU_EEG_C1.PNG)
+![](img/CICU_EEG_C2.PNG)
+
 From the plots above, one can observe that the transfer learning approach yields significantly improved results for several patients, but most patients do not benefit from the proposed methodology. Meanwhile, transfer learning does provide more promising results for obtaining satisfying test metrics for the NC/ND/CLV class, which is relatively underrepresented compared to the ED/LVS class within the training dataset.
 
 ## Cardiac Arrest Onset Prediction
@@ -49,7 +53,31 @@ A more interesting application of inter-EEG transfer learning in this project is
 
 As done in the EEG background classification process, a model for cardiac arrest prediction is trained by feeding pre-processed EEG features/images into a pre-trained CNN and fine-tuning parameters in the last few layers to specifically suit the needs of cardiac arrest prediction via EEG analysis. Note that the training procedure is detailed within **train_classifier_pred.py**. Again, a cross-validation method is used to train each model on all patients except one and test the model on the excluded patient. Due to the large imbalance between EEG recordings within ~15 minutes of cardiac arrest and those that are not, training losses are weighted differently for the two class labels. The file contains an option to train a baseline model, which is a model that contains the same number of parameters but does not use transfer learning from the NICU seizure detection model.
 
-Furthermore, a post-processing method is used to check the reliability of the model since the raw model outputs do not align well with real-life clinical needs of obtaining a consistent set of predictions for cardiac arrest. The post-processing scheme uses a windowing method, where only continuous model outputs above a certain threshold within a specified window frame are combined together to output a continuous alert for the test patient. The file **evaluate_model.py** contains methods for these needs, along with a method that returns test metrics for cardiac arrest prediction. Sample results are demonstrated below for several patients within the CHOP dataset, with the cardiac arrest onset occuring at the right-end of the graph as indicated by the red lines. On the left is the raw model output, while on the right is the postprocessed model output.
+Furthermore, a post-processing method is used to check the reliability of the model since the raw model outputs do not align well with real-life clinical needs of obtaining a consistent set of predictions for cardiac arrest. The post-processing scheme uses a windowing method, where only continuous model outputs above a certain threshold within a specified window frame are combined together to output a continuous alert for the test patient. The file **evaluate_model.py** contains methods for these needs, along with a method that returns test metrics for cardiac arrest prediction. Sample results are demonstrated below for several patients within the CHOP dataset, with the cardiac arrest onset occuring at the right-end of the graph as indicated by the red lines. On the left is the raw model output, while on the right is the postprocessed model output. The image on the top is the baseline model's outputs, while the image on the bottom is our model's outputs.
+
+![](img/CICU_PRED_P1_B.PNG)
+![](img/CICU_PRED_P1_TF.PNG)
+
+It can be seen that our custom model performs significantly better on the first patient's EEG data.
+
+![](img/CICU_PRED_P2_B.PNG)
+![](img/CICU_PRED_P2_TF.PNG)
+
+Both models perform exceptionally well in predicting 15 minutes before the second patient's cardiac arrest.
+
+![](img/CICU_PRED_P3_B.PNG)
+![](img/CICU_PRED_P3_TF.PNG)
+
+Again, our custom model performs better compared to the baseline model.
+
+![](img/CICU_PRED_P4_B.PNG)
+![](img/CICU_PRED_P4_TF.PNG)
+
+Both models output a high amount of false positive alarms, making it difficult for clinical implementation. In fact, a significant portion of the patients have similar results to the figure above, and this result will be discussed in the following section.
+
+Below is a summarized comparison between baseline NN models and transfer learning-based CNN models on the cardiac arrest prediction task.
+
+![](img/CICU_PRED_FD.PNG)
 
 The false detection rates of the model is defined as each 15-minute segment that contains a post-processed output falsely predicting the presence of cardiac arrest. Overall, all models were able to detect the presence of cardiac arrest at least ~5 minutes before the actual cardiac arrest onset. It can be seen that models that have leveraged transfer learning generally outperform the baseline model, and that our model is able to predict cardiac arrest with no more than 1 false detection/hr for more than half of the patients.
 
